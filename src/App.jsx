@@ -52,15 +52,15 @@ function App() {
     });
 
     fetch(`/syncTime?${params}`)
-      .then(() => setConfirmacion('La hora se sincronizó correctamente con tu dispositivo.'))
-      .catch(() => setConfirmacion('La hora se sincronizó correctamente con tu dispositivo.'));
+      .then(() => setConfirmacion({ titulo: 'Hora sincronizada', mensaje: 'La hora se sincronizó correctamente con tu dispositivo.' }))
+      .catch(() => setConfirmacion({ titulo: 'Hora sincronizada', mensaje: 'La hora se sincronizó correctamente con tu dispositivo.' }));
   };
 
   const hacerTara = (numero) => {
     fetch(`/tara?target=${numero}`)
       .then(r => r.text())
-      .then(() => alert(`Tara realizada en Báscula ${numero}`))
-      .catch(() => alert(`Tara enviada a Báscula ${numero}`));
+      .then(() => setConfirmacion({ titulo: 'Tara realizada', mensaje: `Se realizó la tara en la Báscula ${numero}.` }))
+      .catch(() => setConfirmacion({ titulo: 'Tara enviada', mensaje: `Se envió la tara a la Báscula ${numero}.` }));
   };
 
   const fecha = ahora.toLocaleDateString('es-CO', {
@@ -80,12 +80,13 @@ function App() {
       {!sistemaIniciado && (
         <section className="welcome-card" id="pantallaInicio">
           <div className="institution-logos" aria-label="Espacios reservados para logos institucionales">
-            <div className="logo-slot logo-slot--welcome"><span>Bee Brain</span></div>
-            <div className="logo-slot logo-slot--welcome"><span>SENA</span></div>
+            <img className="logo-slot logo-slot--welcome" src="/bee-brain-logo.png" alt="Logo Bee Brain" />
+            <img className="logo-slot logo-slot--welcome" src="/sena-logo.png" alt="Logo SENA" />
+
+
           </div>
           <p className="eyebrow">HIVE / 01 · MONITOREO</p>
           <h1>Control de<br /><em>Colmena</em></h1>
-          <p className="welcome-copy">Una vista serena y precisa del ritmo de tu apiario.</p>
           <button className="btn-start" onClick={iniciarSistema}>
             <span>Entrar al panel</span><span aria-hidden="true">→</span>
           </button>
@@ -106,8 +107,8 @@ function App() {
             </div>
             <div className="topbar-right">
               <div className="institution-logos institution-logos--header" aria-label="Espacios reservados para logos institucionales">
-                <div className="logo-slot logo-slot--header"><span>Bee Brain</span></div>
-                <div className="logo-slot logo-slot--header"><span>SENA</span></div>
+                <img className="logo-slot logo-slot--header" src="/bee-brain-logo.png" alt="Logo Bee Brain" />
+                <img className="logo-slot logo-slot--header" src="/sena-logo.png" alt="Logo SENA" />
               </div>
               <div className="connection-status"><span className="live-dot" /> En línea</div>
             </div>
@@ -225,8 +226,8 @@ function App() {
           >
             <div className="confirmation-icon" aria-hidden="true">✓</div>
             <p className="eyebrow">Acción completada</p>
-            <h2 id="confirmation-title">Hora sincronizada</h2>
-            <p>{confirmacion}</p>
+            <h2 id="confirmation-title">{confirmacion.titulo}</h2>
+            <p>{confirmacion.mensaje}</p>
             <button className="modal-button" onClick={() => setConfirmacion(null)}>Entendido</button>
           </section>
         </div>
